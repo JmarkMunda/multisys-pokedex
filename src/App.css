@@ -2,11 +2,18 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  ---primary-color: rgb(252, 138, 138);
+  ---secondary-color: rgb(255, 181, 181);
+}
+
+::selection {
+  background-color: var(---primary-color);
 }
 
 .container {
   width: 90%;
   height: 100%;
   padding: 1rem;
+  margin: auto;
 }
 

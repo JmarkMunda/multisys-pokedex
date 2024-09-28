@@ -1,13 +1,23 @@
 import "./App.css";
-import { Button } from "./components/ui/button";
+import Navbar from "./components/layout/Navbar";
+import useNavbarControls from "./hooks/useNavbarControls";
 
 function App() {
+  const { searchValue, viewMode, handleSearchChange, toggleViewMode } =
+    useNavbarControls();
+
   return (
     <>
-      <nav className="container flex items-center justify-between">
-        <p>Pokedex</p>
-        <Button>Click me</Button>
-      </nav>
+      <Navbar
+        searchValue={searchValue}
+        viewMode={viewMode}
+        handleSearchChange={handleSearchChange}
+        toggleViewMode={toggleViewMode}
+      />
+
+      <main className="container">
+        <p>Hello World</p>
+      </main>
     </>
   );
 }
