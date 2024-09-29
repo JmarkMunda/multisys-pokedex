@@ -17,3 +17,24 @@
   margin: auto;
 }
 
+.card-container-effect {
+  visibility: hidden;
+}
+
+.card-container-effect > * {
+  visibility: visible;
+}
+
+.card-container-effect > * {
+  transition: opacity 150ms linear 100ms, transform 150ms ease-in-out 100ms;
+}
+
+.card-container-effect:hover > * {
+  transform: scale(0.9);
+  opacity: 0.4;
+}
+
+.card-container-effect > *:hover {
+  transform: scale(1);
+  opacity: 1;
+}
