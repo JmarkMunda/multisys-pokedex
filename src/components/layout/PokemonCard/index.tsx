@@ -1,31 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Props } from "./types";
 import { getPokemon } from "@/services/pokemonService";
-import { PokemonDetailsType } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
-import { getTypeColor } from "@/lib/utils";
+import { capitalize, getTypeColor } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 const PokemonCard = ({ name, url }: Props) => {
-  // Do fetching here
-  const [details, setDetails] = useState<PokemonDetailsType | null>(null);
   const navigate = useNavigate();
+  const id = url.split("/").at(-2);
 
-  const fetchPokemon = async () => {
-    const id = url.split("/").at(-2);
-    if (!id) return;
-    const data = await getPokemon(id);
-    setDetails({
-      id: data.id,
-      name: data.name,
-      image: data.sprites.other.home.front_default,
-      types: data.types,
-    });
-  };
-
-  useEffect(() => {
-    fetchPokemon();
-  }, []);
+  const { data } = useQuery({
+    queryKey: ["pokemon", id],
+    queryFn: () => getPokemon(id!),
+  });
 
   const handleCardClick = (id: string) => {
     navigate(`/pokemon/${id}`);
@@ -33,23 +21,22 @@ const PokemonCard = ({ name, url }: Props) => {
 
   return (
     <div
-      onClick={() => handleCardClick(details!.id)}
+      onClick={() => handleCardClick(data!.id)}
       className="relative min-w-full lg:min-w-[calc(25%-32px)] sm:min-w-[calc(50%-32px)] transition-all ease-in-out">
       <div className="shadow-md rounded-lg p-4 cursor-pointer flex flex-col items-center gap-4 bg-white m-2">
         {/* IMAGE */}
-
         <img
-          src={details?.image ?? ""}
+          src={data?.sprites?.other.home.front_default ?? ""}
           alt="pokemon-image"
           className="w-32 h-32 object-contain hover:drop-shadow-xl"
         />
 
         {/* NAME */}
-        <p className="text-xl font-bold">{name}</p>
+        <p className="text-xl font-bold">{capitalize(name)}</p>
 
         {/* TYPE */}
         <div className="flex items-center gap-2">
-          {details?.types.map(({ type }) => (
+          {data?.types.map(({ type }) => (
             <Badge key={type.name} className={getTypeColor(type.name)}>
               {type.name}
             </Badge>

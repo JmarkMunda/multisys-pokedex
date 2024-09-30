@@ -1,7 +1,5 @@
-import { PokemonDetailsType } from "@/lib/types";
 import { capitalize, getTypeColor } from "@/lib/utils";
 import { getPokemon } from "@/services/pokemonService";
-import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FaCaretLeft } from "react-icons/fa6";
 import { Badge } from "@/components/ui/badge";
@@ -10,22 +8,15 @@ import { motion } from "framer-motion";
 import { PiSwordLight, PiShield, PiBoot, PiHeart } from "react-icons/pi";
 import { RxMagicWand } from "react-icons/rx";
 import { GiHeartArmor } from "react-icons/gi";
+import { useQuery } from "@tanstack/react-query";
 
 const PokemonPage = () => {
   const { id } = useParams();
-  const [pokemonDetails, setPokemonDetails] =
-    useState<PokemonDetailsType | null>(null);
 
-  const fetchPokemonDetails = async () => {
-    if (!id) return;
-    const data = await getPokemon(id);
-    console.log(data);
-    setPokemonDetails(data);
-  };
-
-  useEffect(() => {
-    fetchPokemonDetails();
-  }, []);
+  const { data } = useQuery({
+    queryKey: ["pokemon", id],
+    queryFn: () => getPokemon(id!),
+  });
 
   const generateStatsIcon = (name: string) => {
     switch (name) {
@@ -46,30 +37,26 @@ const PokemonPage = () => {
     }
   };
 
-  if (!pokemonDetails) return;
+  if (!data) return;
 
   return (
-    <section
-      className={`${getTypeColor(pokemonDetails.types[0].type.name)} h-screen`}>
+    <section className={`${getTypeColor(data.types[0].type.name)} h-screen`}>
       <div className="flex flex-col h-full">
         {/* HEADER */}
         <div className="container flex-1 flex items-center justify-between">
-          <div className="flex items-center">
-            <FaCaretLeft />
-            <Link to="/" className="cursor-pointer">
-              Back
-            </Link>
-          </div>
-          <h1 className="text-3xl font-bold">
-            {capitalize(pokemonDetails.name)}
-          </h1>
-          <span>#{pokemonDetails.id}</span>
+          <Link
+            to="/"
+            className="flex items-center cursor-pointer hover:text-blue-600">
+            <FaCaretLeft /> Back
+          </Link>
+          <h1 className="text-3xl font-bold">{capitalize(data.name)}</h1>
+          <span>#{data.id}</span>
         </div>
 
         {/* OVERLAPPED IMAGE */}
         <div className="flex items-center justify-center">
           <img
-            src={pokemonDetails.sprites?.other.home.front_default}
+            src={data.sprites?.other.home.front_default}
             alt="pokemon-image"
             className="w-64 h-6w-64 object-contain drop-shadow-2xl mb-[-120px] z-10"
           />
@@ -80,7 +67,7 @@ const PokemonPage = () => {
           <div className="container flex flex-col items-center">
             {/* TYPE */}
             <div className="flex items-center gap-2 mb-8">
-              {pokemonDetails?.types.map(({ type }) => (
+              {data?.types.map(({ type }) => (
                 <Badge key={type.name} className={`${getTypeColor(type.name)}`}>
                   {capitalize(type.name)}
                 </Badge>
@@ -92,20 +79,20 @@ const PokemonPage = () => {
               <div className="mb-8 p-4 sm:flex-1">
                 <p className="text-xl font-bold text-gray-900">Details:</p>
                 <p>
-                  Experience: <span>{pokemonDetails.base_experience} XP</span>
+                  Experience: <span>{data.base_experience} XP</span>
                 </p>
                 <p>
-                  Weight: <span>{pokemonDetails.weight}</span>
+                  Weight: <span>{data.weight}</span>
                 </p>
                 <p>
-                  Height: <span>{pokemonDetails.height}</span>
+                  Height: <span>{data.height}</span>
                 </p>
               </div>
 
               {/* STATS */}
               <div className="p-4 mb-8 rounded-xl bg-gray-400/10 sm:flex-1 shadow-sm">
                 <p className="text-xl font-bold text-gray-900">Stats:</p>
-                {pokemonDetails.stats?.map(({ base_stat, stat }) => (
+                {data.stats?.map(({ base_stat, stat }) => (
                   <div key={stat.name} className="my-2">
                     <div className="flex items-center gap-2">
                       {generateStatsIcon(stat.name)}

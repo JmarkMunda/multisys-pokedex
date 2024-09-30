@@ -1,3 +1,10 @@
+export type PokemonsResponseType = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: { name: string; url: string }[];
+};
+
 export type PokemonDetailsType = {
   id: string;
   image: string;
