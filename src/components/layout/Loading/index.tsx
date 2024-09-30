@@ -4,6 +4,7 @@ import { Props } from "./types";
 
 const Loading = ({
   text = "Loading...",
+  description,
   color = "#fd5a5a",
   size = 80,
   className,
@@ -12,11 +13,12 @@ const Loading = ({
   return (
     <div
       className={cn(
-        "h-[95vh] flex flex-col gap-2 justify-center items-center",
+        "h-[90vh] flex flex-col gap-2 justify-center items-center",
         className
       )}>
       <BounceLoader size={size} color={color} {...props} />
-      <p className={`text-[${color}]`}>{text}</p>
+      <p style={{ color }}>{text}</p>
+      <p style={{ color }}>{description}</p>
     </div>
   );
 };

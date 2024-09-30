@@ -13,9 +13,9 @@ const HomePage = () => {
     useNavbarControls();
   // Pagination
   const { currentPage, totalPages, handlePrevPage, handleNextPage } =
-    usePagination();
+    usePagination(searchValue);
   // List all pokemons
-  const { data, isPending } = usePokemons(currentPage);
+  const { pokemons, isLoading } = usePokemons(currentPage, searchValue);
 
   return (
     <>
@@ -26,17 +26,19 @@ const HomePage = () => {
         toggleViewMode={toggleViewMode}
       />
 
-      {isPending ? (
-        <Loading />
+      {isLoading ? (
+        <Loading text="Get ready! Gotta catch ’em all" />
       ) : (
         <>
-          <PokemonList data={data?.results ?? []} currentPage={currentPage} />
-          <Footer
-            currentPage={currentPage}
-            totalPages={totalPages}
-            handlePrevPage={handlePrevPage}
-            handleNextPage={handleNextPage}
-          />
+          <PokemonList data={pokemons ?? []} currentPage={currentPage} />
+          {!searchValue && (
+            <Footer
+              currentPage={currentPage}
+              totalPages={totalPages}
+              handlePrevPage={handlePrevPage}
+              handleNextPage={handleNextPage}
+            />
+          )}
         </>
       )}
     </>

@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import usePokemons from "./usePokemons";
 
-const usePagination = () => {
+const usePagination = (searchValue: string) => {
   const { state } = useLocation();
   const [currentPage, setCurrentPage] = useState((state?.page as number) ?? 1);
-  const { total } = usePokemons(currentPage);
+  const { total } = usePokemons(currentPage, searchValue);
   const totalPages = Math.ceil(total / LIMIT);
 
   useEffect(() => {
