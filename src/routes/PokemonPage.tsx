@@ -1,9 +1,9 @@
 import { capitalize, getTypeColor } from "@/lib/utils";
 import { getPokemon } from "@/services/pokemonService";
-import { Link, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FaCaretLeft } from "react-icons/fa6";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
 import { motion } from "framer-motion";
 import { PiSwordLight, PiShield, PiBoot, PiHeart } from "react-icons/pi";
 import { RxMagicWand } from "react-icons/rx";
@@ -12,6 +12,8 @@ import { useQuery } from "@tanstack/react-query";
 
 const PokemonPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { state } = useLocation();
 
   const { data } = useQuery({
     queryKey: ["pokemon", id],
@@ -37,6 +39,8 @@ const PokemonPage = () => {
     }
   };
 
+  const handleBackClick = () => navigate("/", { state: { page: state.page } });
+
   if (!data) return;
 
   return (
@@ -44,11 +48,11 @@ const PokemonPage = () => {
       <div className="flex flex-col h-full">
         {/* HEADER */}
         <div className="container flex-1 flex items-center justify-between">
-          <Link
-            to="/"
+          <span
+            onClick={handleBackClick}
             className="flex items-center cursor-pointer hover:text-blue-600">
             <FaCaretLeft /> Back
-          </Link>
+          </span>
           <h1 className="text-3xl font-bold">{capitalize(data.name)}</h1>
           <span>#{data.id}</span>
         </div>
@@ -92,7 +96,7 @@ const PokemonPage = () => {
               {/* STATS */}
               <div className="p-4 mb-8 rounded-xl bg-gray-400/10 sm:flex-1 shadow-sm">
                 <p className="text-xl font-bold text-gray-900">Stats:</p>
-                {data.stats?.map(({ base_stat, stat }) => (
+                {data.stats?.map(({ base_stat, stat }, index) => (
                   <div key={stat.name} className="my-2">
                     <div className="flex items-center gap-2">
                       {generateStatsIcon(stat.name)}
@@ -101,9 +105,9 @@ const PokemonPage = () => {
                       </span>
                     </div>
                     <motion.div
-                      className={
-                        "h-2 bg-blue-500 rounded-full transition-all duration-1000 ease-in-out"
-                      }
+                      className={`h-2 ${
+                        index % 2 === 0 ? "bg-blue-900" : "bg-yellow-500"
+                      } rounded-full transition-all duration-1000 ease-in-out`}
                       initial={{ width: 0 }}
                       animate={{ width: `${base_stat / 2}%` }}
                     />

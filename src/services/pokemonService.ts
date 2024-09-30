@@ -1,9 +1,14 @@
 import { PokemonDetailsType, PokemonsResponseType } from "@/lib/types";
 import axiosInstance from "./config";
 
-export const getAllPokemon = async (): Promise<PokemonsResponseType> => {
+export const getAllPokemon = async (
+  limit = 10,
+  offset = 10
+): Promise<PokemonsResponseType> => {
   try {
-    const res = await axiosInstance.get("/pokemon");
+    const res = await axiosInstance.get(
+      `/pokemon?limit=${limit}&offset=${offset}`
+    );
     return res.data;
   } catch (error) {
     console.log("Error getAllPokemon: ", error);

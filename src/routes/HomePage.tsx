@@ -1,18 +1,21 @@
 import "@/App.css";
+import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 import PokemonList from "@/components/layout/PokemonList";
+import Loading from "@/components/layout/Loading";
 import useNavbarControls from "@/hooks/useNavbarControls";
-import { getAllPokemon } from "@/services/pokemonService";
-import { useQuery } from "@tanstack/react-query";
+import usePagination from "@/hooks/usePagination";
+import usePokemons from "@/hooks/usePokemons";
 
 const HomePage = () => {
+  // Navbar
   const { searchValue, viewMode, handleSearchChange, toggleViewMode } =
     useNavbarControls();
-
-  const { data } = useQuery({
-    queryKey: ["pokemons"],
-    queryFn: getAllPokemon,
-  });
+  // Pagination
+  const { currentPage, totalPages, handlePrevPage, handleNextPage } =
+    usePagination();
+  // List all pokemons
+  const { data, isPending } = usePokemons(currentPage);
 
   return (
     <>
@@ -23,7 +26,19 @@ const HomePage = () => {
         toggleViewMode={toggleViewMode}
       />
 
-      <PokemonList data={data?.results ?? []} />
+      {isPending ? (
+        <Loading />
+      ) : (
+        <>
+          <PokemonList data={data?.results ?? []} currentPage={currentPage} />
+          <Footer
+            currentPage={currentPage}
+            totalPages={totalPages}
+            handlePrevPage={handlePrevPage}
+            handleNextPage={handleNextPage}
+          />
+        </>
+      )}
     </>
   );
 };
