@@ -1,12 +1,12 @@
-import "./App.css";
+import "@/App.css";
+import Navbar from "@/components/layout/Navbar";
+import PokemonList from "@/components/layout/PokemonList";
+import useNavbarControls from "@/hooks/useNavbarControls";
+import { PokemonResult } from "@/components/layout/PokemonList/types";
+import { getAllPokemon } from "@/services/pokemonService";
 import { useEffect, useState } from "react";
-import { getAllPokemon } from "./services/pokemonService";
-import { PokemonResult } from "./components/layout/PokemonList/types";
-import PokemonList from "./components/layout/PokemonList";
-import Navbar from "./components/layout/Navbar";
-import useNavbarControls from "./hooks/useNavbarControls";
 
-function App() {
+const HomePage = () => {
   const { searchValue, viewMode, handleSearchChange, toggleViewMode } =
     useNavbarControls();
 
@@ -33,6 +33,6 @@ function App() {
       <PokemonList data={pokemons} />
     </>
   );
-}
+};
 
-export default App;
+export default HomePage;

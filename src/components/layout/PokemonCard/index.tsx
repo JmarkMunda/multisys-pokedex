@@ -4,19 +4,21 @@ import { getPokemon } from "@/services/pokemonService";
 import { PokemonDetailsType } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { getTypeColor } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 const PokemonCard = ({ name, url }: Props) => {
   // Do fetching here
   const [details, setDetails] = useState<PokemonDetailsType | null>(null);
+  const navigate = useNavigate();
 
   const fetchPokemon = async () => {
     const id = url.split("/").at(-2);
     if (!id) return;
     const data = await getPokemon(id);
-    console.log(data);
     setDetails({
+      id: data.id,
       name: data.name,
-      image: data.sprites.front_default,
+      image: data.sprites.other.home.front_default,
       types: data.types,
     });
   };
@@ -25,8 +27,14 @@ const PokemonCard = ({ name, url }: Props) => {
     fetchPokemon();
   }, []);
 
+  const handleCardClick = (id: string) => {
+    navigate(`/pokemon/${id}`);
+  };
+
   return (
-    <div className="relative min-w-full lg:min-w-[calc(25%-32px)] sm:min-w-[calc(50%-32px)] transition-all ease-in-out">
+    <div
+      onClick={() => handleCardClick(details!.id)}
+      className="relative min-w-full lg:min-w-[calc(25%-32px)] sm:min-w-[calc(50%-32px)] transition-all ease-in-out">
       <div className="shadow-md rounded-lg p-4 cursor-pointer flex flex-col items-center gap-4 bg-white m-2">
         {/* IMAGE */}
 
