@@ -1,6 +1,13 @@
 import { cn } from "@/lib/utils";
 import { BounceLoader } from "react-spinners";
-import { Props } from "./types";
+
+type Props = {
+  text?: string;
+  description?: string;
+  color?: string;
+  size?: number;
+  className?: string;
+};
 
 const Loading = ({
   text = "Loading...",

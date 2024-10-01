@@ -14,7 +14,7 @@ const PokemonCard = ({ name, url, viewMode, currentPage, index }: Props) => {
   const isGridView = viewMode === "grid";
   const isCaptured = false;
 
-  // Get pokemon details
+  // Get Pokemon Details
   const { data } = usePokemon(id!);
 
   // Handlers
@@ -67,8 +67,6 @@ const PokemonCard = ({ name, url, viewMode, currentPage, index }: Props) => {
               ))}
             </div>
           </div>
-
-          {/* TODO: fix styling  */}
 
           {/* CAPTURED */}
           <div
