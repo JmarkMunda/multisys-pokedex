@@ -5,14 +5,14 @@ import { capitalize, getTypeColor } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import usePokemon from "@/hooks/usePokemon";
-import capturedIcon from "@/assets/ball.png";
-import emptyPokeball from "@/assets/empty-pokemon.png";
+import capturedIcon from "@/assets/captured.png";
+import useCaptureRelease from "@/hooks/useCaptureRelease";
 
 const PokemonCard = ({ name, url, viewMode, currentPage, index }: Props) => {
   const navigate = useNavigate();
   const id = url.split("/").at(-2);
   const isGridView = viewMode === "grid";
-  const isCaptured = false;
+  const { checkIfPokemonCaptured } = useCaptureRelease();
 
   // Get Pokemon Details
   const { data } = usePokemon(id!);
@@ -69,18 +69,14 @@ const PokemonCard = ({ name, url, viewMode, currentPage, index }: Props) => {
           </div>
 
           {/* CAPTURED */}
-          <div
-            className={`absolute right-8 sm:right-16 flex items-center gap-2 transition-all ease-out hover:font-bold hover:drop-shadow-xl hover:scale-125 ${
-              isGridView && "relative right-0 sm:right-0 my-2"
-            }`}>
-            <img
-              src={isCaptured ? emptyPokeball : capturedIcon}
-              className="w-8 h-8"
-            />
-            <p className="hidden sm:block">
-              {isCaptured ? "Release" : "Capture"}
-            </p>
-          </div>
+          {checkIfPokemonCaptured(id!) && (
+            <div
+              className={`absolute top-2 right-8 sm:top-1/2 sm:-translate-y-1/2 sm:right-16 flex items-center gap-2 transition-all ease-out hover:font-bold hover:drop-shadow-xl hover:scale-125 ${
+                isGridView && "relative left-0 sm:left-0 my-2"
+              }`}>
+              <img src={capturedIcon} className="w-8 h-8" />
+            </div>
+          )}
         </div>
       </motion.div>
     </div>

@@ -50,9 +50,7 @@ export const capitalize = (text: string) => {
 export const getLocalStorage = (key: string) => {
   try {
     const data = localStorage.getItem(key);
-    if (!data) return null;
-    const parsedData = JSON.parse(data);
-    return parsedData;
+    return data ? JSON.parse(data) : null;
   } catch (error) {
     console.log("Error getLocalStorage: ", error);
     return error;

@@ -27,3 +27,9 @@ export type PokemonDetailsType = {
     };
   };
 };
+
+export type CapturedPokemonType = {
+  id: string;
+  name: string;
+  date: string;
+};

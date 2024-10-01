@@ -2,7 +2,19 @@ import { Props } from "./types";
 import emptyPokeball from "@/assets/empty-pokemon.png";
 import capturedIcon from "@/assets/ball.png";
 
-const CaptureButton = ({ isCaptured, handleClick }: Props) => {
+const CaptureReleaseButton = ({
+  isCaptured,
+  handleOpenCaptureModal,
+  handleOpenReleaseModal,
+}: Props) => {
+  const handleClick = () => {
+    if (isCaptured) {
+      handleOpenReleaseModal();
+    } else {
+      handleOpenCaptureModal();
+    }
+  };
+
   return (
     <div
       onClick={handleClick}
@@ -16,4 +28,4 @@ const CaptureButton = ({ isCaptured, handleClick }: Props) => {
   );
 };
 
-export default CaptureButton;
+export default CaptureReleaseButton;

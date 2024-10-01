@@ -6,19 +6,28 @@ import DisplayImage from "@/components/pages/PokemonPage/DisplayImage";
 import BadgeTypes from "@/components/pages/PokemonPage/BadgeTypes";
 import Details from "@/components/pages/PokemonPage/Details";
 import Stats from "@/components/pages/PokemonPage/Stats";
-import CaptureButton from "@/components/pages/PokemonPage/CaptureButton";
+import CaptureReleaseButton from "@/components/pages/PokemonPage/CaptureReleaseButton";
+import CaptureModal from "@/components/pages/PokemonPage/CaptureModal";
+import ReleaseModal from "@/components/pages/PokemonPage/ReleaseModal";
+import useCaptureRelease from "@/hooks/useCaptureRelease";
 
 const PokemonPage = () => {
   const { id } = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
-  const isCaptured = true; //TODO: replace this with state
+
+  const {
+    showCaptureModal,
+    showReleaseModal,
+    handleOpenCaptureModal,
+    handleCloseCaptureModal,
+    handleOpenReleaseModal,
+    handleCloseReleaseModal,
+    checkIfPokemonCaptured,
+  } = useCaptureRelease();
 
   // Get Pokemon Details
   const { data } = usePokemon(id!);
-
-  // Handler
-  const handleBackClick = () => navigate("/", { state: { page: state.page } });
 
   if (!data) return;
 
@@ -29,7 +38,7 @@ const PokemonPage = () => {
         <Header
           id={data.id}
           name={data.name}
-          handleBackClick={handleBackClick}
+          handleBackClick={() => navigate("/", { state: { page: state.page } })}
         />
 
         {/* OVERLAPPED IMAGE */}
@@ -44,10 +53,28 @@ const PokemonPage = () => {
                 baseExp={data?.base_experience}
                 weight={data?.weight}
                 height={data?.height}
+                isCaptured={checkIfPokemonCaptured(id!)}
               />
               <Stats stats={data?.stats} />
             </div>
-            <CaptureButton isCaptured={isCaptured} handleClick={() => {}} />
+
+            <CaptureReleaseButton
+              isCaptured={checkIfPokemonCaptured(id!)}
+              handleOpenCaptureModal={handleOpenCaptureModal}
+              handleOpenReleaseModal={handleOpenReleaseModal}
+            />
+
+            <CaptureModal
+              id={data.id}
+              isVisible={showCaptureModal}
+              onClose={handleCloseCaptureModal}
+            />
+
+            <ReleaseModal
+              id={data.id}
+              isVisible={showReleaseModal}
+              onClose={handleCloseReleaseModal}
+            />
           </div>
         </div>
       </div>
