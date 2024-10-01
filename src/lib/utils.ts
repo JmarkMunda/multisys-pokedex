@@ -46,3 +46,42 @@ export const capitalize = (text: string) => {
   const combinedWord = [...firstLetter, ...splitLetters.slice(1)];
   return combinedWord;
 };
+
+export const getLocalStorage = (key: string) => {
+  try {
+    const data = localStorage.getItem(key);
+    if (!data) return null;
+    const parsedData = JSON.parse(data);
+    return parsedData;
+  } catch (error) {
+    console.log("Error getLocalStorage: ", error);
+    return error;
+  }
+};
+export const setLocalStorage = <T>(key: string, value: T) => {
+  try {
+    const jsonValue = JSON.stringify(value);
+    return localStorage.setItem(key, jsonValue);
+  } catch (error) {
+    console.log("Error setLocalStorage: ", error);
+    return error;
+  }
+};
+
+export const deleteLocalStorage = (key: string) => {
+  try {
+    return localStorage.removeItem(key);
+  } catch (error) {
+    console.log("Error deleteLocalStorage: ", error);
+    return error;
+  }
+};
+
+export const clearLocalStorage = () => {
+  try {
+    return localStorage.clear();
+  } catch (error) {
+    console.log("Error clearLocalStorage: ", error);
+    return error;
+  }
+};

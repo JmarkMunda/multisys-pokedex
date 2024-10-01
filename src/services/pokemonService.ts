@@ -6,9 +6,8 @@ export const getAllPokemon = async (
   offset = 10
 ): Promise<PokemonsResponseType> => {
   try {
-    const res = await axiosInstance.get(
-      `/pokemon?limit=${limit}&offset=${offset}`
-    );
+    const url = `/pokemon?limit=${limit}&offset=${offset}`;
+    const res = await axiosInstance.get(url);
     return res.data;
   } catch (error) {
     console.log("Error getAllPokemon: ", error);
@@ -18,7 +17,8 @@ export const getAllPokemon = async (
 
 export const getPokemon = async (id: string): Promise<PokemonDetailsType> => {
   try {
-    const res = await axiosInstance.get(`/pokemon/${id}`);
+    const url = `/pokemon/${id}`;
+    const res = await axiosInstance.get(url);
     return res.data;
   } catch (error) {
     console.log("Error getPokemon: ", error);
@@ -28,7 +28,8 @@ export const getPokemon = async (id: string): Promise<PokemonDetailsType> => {
 
 export const getPokemonCharacteristics = async (id: string) => {
   try {
-    const res = await axiosInstance.get(`/characteristic/${id}`);
+    const url = `/characteristic/${id}`;
+    const res = await axiosInstance.get(url);
     return res.data;
   } catch (error) {
     console.log("Error getPokemonCharacteristics", error);

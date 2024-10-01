@@ -1,21 +1,23 @@
 import React from "react";
 import { Props } from "./types";
-import { getPokemon } from "@/services/pokemonService";
 import { Badge } from "@/components/ui/Badge";
 import { capitalize, getTypeColor } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
+import usePokemon from "@/hooks/usePokemon";
+import capturedIcon from "@/assets/ball.png";
+import emptyPokeball from "@/assets/empty-pokemon.png";
 
-const PokemonCard = ({ name, url, currentPage, index }: Props) => {
+const PokemonCard = ({ name, url, viewMode, currentPage, index }: Props) => {
   const navigate = useNavigate();
   const id = url.split("/").at(-2);
+  const isGridView = viewMode === "grid";
+  const isCaptured = false;
 
-  const { data } = useQuery({
-    queryKey: ["pokemon", id],
-    queryFn: () => getPokemon(id!),
-  });
+  // Get pokemon details
+  const { data } = usePokemon(id!);
 
+  // Handlers
   const handleCardClick = (id: string) => {
     navigate(`/pokemon/${id}`, { state: { page: currentPage } });
   };
@@ -23,13 +25,20 @@ const PokemonCard = ({ name, url, currentPage, index }: Props) => {
   return (
     <div
       onClick={() => handleCardClick(data!.id)}
-      className="relative min-w-full lg:min-w-[calc(25%-32px)] sm:min-w-[calc(50%-32px)] transition-all ease-in-out">
+      className={`relative min-w-full ${
+        isGridView && "lg:min-w-[calc(25%-32px)]"
+      } ${
+        isGridView && "sm:min-w-[calc(50%-32px)]"
+      } transition-all ease-in-out`}>
       <motion.div
         initial={{ opacity: 0, transform: "translateY(-10px)" }}
         animate={{ opacity: 1, transform: "translateY(0px)" }}
         transition={{ delay: index! * 0.1 }}
         style={{ willChange: "auto" }}>
-        <div className="shadow-md rounded-lg p-4 cursor-pointer flex flex-col items-center gap-4 bg-white m-2">
+        <div
+          className={`shadow-md rounded-lg p-4 cursor-pointer flex items-center gap-4 bg-white m-2 ${
+            isGridView ? "flex-col" : "flex-row gap-16"
+          } `}>
           {/* IMAGE */}
           <div className="w-32 h-32">
             <img
@@ -39,16 +48,40 @@ const PokemonCard = ({ name, url, currentPage, index }: Props) => {
             />
           </div>
 
-          {/* NAME */}
-          <p className="text-xl font-bold">{capitalize(name)}</p>
+          {/* NAME & TYPE */}
+          <div>
+            <p
+              className={`text-xl font-bold mb-4 ${
+                isGridView && "text-center"
+              }`}>
+              {capitalize(name)}
+            </p>
+            <div
+              className={`flex items-center gap-2 ${
+                isGridView && "justify-center"
+              }`}>
+              {data?.types.map(({ type }) => (
+                <Badge key={type.name} className={getTypeColor(type.name)}>
+                  {type.name}
+                </Badge>
+              ))}
+            </div>
+          </div>
 
-          {/* TYPE */}
-          <div className="flex items-center gap-2">
-            {data?.types.map(({ type }) => (
-              <Badge key={type.name} className={getTypeColor(type.name)}>
-                {type.name}
-              </Badge>
-            ))}
+          {/* TODO: fix styling  */}
+
+          {/* CAPTURED */}
+          <div
+            className={`absolute right-8 sm:right-16 flex items-center gap-2 transition-all ease-out hover:font-bold hover:drop-shadow-xl hover:scale-125 ${
+              isGridView && "relative right-0 sm:right-0 my-2"
+            }`}>
+            <img
+              src={isCaptured ? emptyPokeball : capturedIcon}
+              className="w-8 h-8"
+            />
+            <p className="hidden sm:block">
+              {isCaptured ? "Release" : "Capture"}
+            </p>
           </div>
         </div>
       </motion.div>

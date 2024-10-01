@@ -30,7 +30,11 @@ const HomePage = () => {
         <Loading text="Get ready! Gotta catch ’em all" />
       ) : (
         <>
-          <PokemonList data={pokemons ?? []} currentPage={currentPage} />
+          <PokemonList
+            data={pokemons ?? []}
+            viewMode={viewMode}
+            currentPage={currentPage}
+          />
           {!searchValue && (
             <Footer
               currentPage={currentPage}

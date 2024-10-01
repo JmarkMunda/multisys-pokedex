@@ -1,5 +1,8 @@
+import { ViewModeType } from "@/hooks/useNavbarControls";
+
 export type Props = {
   data: PokemonResult[];
+  viewMode: ViewModeType;
   currentPage: number;
 };
 
