@@ -1,6 +1,6 @@
 import Modal from "@/components/ui/Modal";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Props } from "./types";
 import { DatePicker } from "@/components/ui/DatePicker";
 import useCapture from "@/hooks/useCapture";

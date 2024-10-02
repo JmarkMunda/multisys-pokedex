@@ -1,4 +1,4 @@
-import { Badge } from "@/components/ui/Badge";
+import { Badge } from "@/components/ui/badge";
 import { Props } from "./types";
 import { capitalize, getTypeColor } from "@/lib/utils";
 

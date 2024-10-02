@@ -1,6 +1,6 @@
 import React from "react";
 import { Props } from "./types";
-import { Badge } from "@/components/ui/Badge";
+import { Badge } from "@/components/ui/badge";
 import { capitalize, getTypeColor } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";

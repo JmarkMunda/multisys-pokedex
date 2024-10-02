@@ -2,7 +2,7 @@ import Modal from "@/components/ui/Modal";
 import { Props } from "./types";
 import { getLocalStorage, setLocalStorage } from "@/lib/utils";
 import { CapturedPokemonType } from "@/lib/types";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 const ReleaseModal = ({ id, isVisible, onClose }: Props) => {
   const handleReleasePokemon = () => {

@@ -1,7 +1,7 @@
 import iconLogo from "@/assets/logo.png";
 import textLogo from "@/assets/pokedex-logo.png";
-import { Input } from "@/components/ui/Input";
-import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { IoGrid, IoSearchOutline } from "react-icons/io5";
 import { FaListUl } from "react-icons/fa";
 import { cn } from "@/lib/utils";

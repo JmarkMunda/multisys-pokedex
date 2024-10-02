@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { Props, TabType } from "./types";
 import { capitalize } from "@/lib/utils";
 
