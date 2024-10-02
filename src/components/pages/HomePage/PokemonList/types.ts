@@ -1,7 +1,8 @@
 import { ViewModeType } from "@/hooks/useNavbarControls";
+import { CapturedPokemonType } from "@/lib/types";
 
 export type Props = {
-  data: PokemonResult[];
+  data: Partial<CapturedPokemonType>[];
   viewMode: ViewModeType;
   currentPage: number;
 };
@@ -9,4 +10,6 @@ export type Props = {
 export type PokemonResult = {
   name: string;
   url: string;
+  nickname?: string;
+  date?: string;
 };

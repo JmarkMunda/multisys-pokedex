@@ -6,4 +6,6 @@ export type Props = {
   viewMode: ViewModeType;
   currentPage: number;
   index?: number;
+  nickname?: string;
+  date?: string;
 };

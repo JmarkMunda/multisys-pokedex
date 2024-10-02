@@ -8,7 +8,15 @@ import usePokemon from "@/hooks/usePokemon";
 import capturedIcon from "@/assets/captured.png";
 import useCaptureRelease from "@/hooks/useCaptureRelease";
 
-const PokemonCard = ({ name, url, viewMode, currentPage, index }: Props) => {
+const PokemonCard = ({
+  name,
+  url,
+  viewMode,
+  currentPage,
+  index,
+  date,
+  nickname,
+}: Props) => {
   const navigate = useNavigate();
   const id = url.split("/").at(-2);
   const isGridView = viewMode === "grid";
@@ -56,23 +64,32 @@ const PokemonCard = ({ name, url, viewMode, currentPage, index }: Props) => {
               }`}>
               {capitalize(name)}
             </p>
-            <div
-              className={`flex items-center gap-2 ${
-                isGridView && "justify-center"
-              }`}>
-              {data?.types.map(({ type }) => (
-                <Badge key={type.name} className={getTypeColor(type.name)}>
-                  {type.name}
-                </Badge>
-              ))}
-            </div>
+            {nickname && (
+              <p className="font-bold text-sm text-gray-500">
+                Nickname: {nickname}
+              </p>
+            )}
+            {date ? (
+              <p className="font-bold text-sm text-gray-500">Date: {date}</p>
+            ) : (
+              <div
+                className={`flex items-center gap-2 ${
+                  isGridView && "justify-center"
+                }`}>
+                {data?.types.map(({ type }) => (
+                  <Badge key={type.name} className={getTypeColor(type.name)}>
+                    {type.name}
+                  </Badge>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* CAPTURED */}
           {checkIfPokemonCaptured(id!) && (
             <div
               className={`absolute top-2 right-8 sm:top-1/2 sm:-translate-y-1/2 sm:right-16 flex items-center gap-2 transition-all ease-out hover:font-bold hover:drop-shadow-xl hover:scale-125 ${
-                isGridView && "relative left-0 sm:left-0 my-2"
+                isGridView && "top-4 sm:top-8 sm:-translate-y-0 sm:right-8"
               }`}>
               <img src={capturedIcon} className="w-8 h-8" />
             </div>

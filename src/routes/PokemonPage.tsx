@@ -66,6 +66,7 @@ const PokemonPage = () => {
 
             <CaptureModal
               id={data.id}
+              name={data.name}
               isVisible={showCaptureModal}
               onClose={handleCloseCaptureModal}
             />

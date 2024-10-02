@@ -15,12 +15,14 @@ const PokemonList = ({ data, viewMode, currentPage }: Props) => {
     <main className="container flex justify-center flex-wrap card-container-effect">
       {data.map((item, index) => (
         <PokemonCard
-          key={item.name}
-          name={item.name}
-          url={item.url}
+          key={item!.name}
+          name={item!.name!}
+          url={item!.url!}
           viewMode={viewMode}
           currentPage={currentPage}
           index={index}
+          nickname={item?.nickname}
+          date={item?.date}
         />
       ))}
     </main>

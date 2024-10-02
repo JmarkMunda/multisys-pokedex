@@ -2,7 +2,7 @@ export type PokemonsResponseType = {
   count: number;
   next: string | null;
   previous: string | null;
-  results: { name: string; url: string }[];
+  results: Partial<CapturedPokemonType>[];
 };
 
 export type PokemonDetailsType = {
@@ -30,6 +30,8 @@ export type PokemonDetailsType = {
 
 export type CapturedPokemonType = {
   id: string;
-  name: string;
+  nickname: string;
   date: string;
+  name?: string;
+  url?: string;
 };
