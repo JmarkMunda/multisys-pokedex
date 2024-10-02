@@ -1,8 +1,6 @@
-import { CapturedPokemonType } from "@/lib/types";
-import { getLocalStorage } from "@/lib/utils";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
-const useCaptureRelease = () => {
+const useCaptureReleaseModal = () => {
   const [showCaptureModal, setShowCaptureModal] = useState(false);
   const [showReleaseModal, setShowReleaseModal] = useState(false);
 
@@ -12,14 +10,6 @@ const useCaptureRelease = () => {
   const handleOpenReleaseModal = () => setShowReleaseModal(true);
   const handleCloseReleaseModal = () => setShowReleaseModal(false);
 
-  const checkIfPokemonCaptured = useCallback((id: string) => {
-    const pokemons: CapturedPokemonType[] | null =
-      getLocalStorage("my-pokemons");
-    if (!pokemons) return false;
-    const isExist = pokemons.some((pokemon) => pokemon.id == id);
-    return isExist;
-  }, []);
-
   return {
     showCaptureModal,
     showReleaseModal,
@@ -27,8 +17,7 @@ const useCaptureRelease = () => {
     handleCloseCaptureModal,
     handleOpenReleaseModal,
     handleCloseReleaseModal,
-    checkIfPokemonCaptured,
   };
 };
 
-export default useCaptureRelease;
+export default useCaptureReleaseModal;

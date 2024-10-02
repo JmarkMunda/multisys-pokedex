@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import usePokemon from "@/hooks/usePokemon";
 import capturedIcon from "@/assets/captured.png";
-import useCaptureRelease from "@/hooks/useCaptureRelease";
+import useCapture from "@/hooks/useCapture";
 
 const PokemonCard = ({
   name,
@@ -20,7 +20,7 @@ const PokemonCard = ({
   const navigate = useNavigate();
   const id = url.split("/").at(-2);
   const isGridView = viewMode === "grid";
-  const { checkIfPokemonCaptured } = useCaptureRelease();
+  const { isPokemonCaptured } = useCapture(id!, name);
 
   // Get Pokemon Details
   const { data } = usePokemon(id!);
@@ -86,7 +86,7 @@ const PokemonCard = ({
           </div>
 
           {/* CAPTURED */}
-          {checkIfPokemonCaptured(id!) && (
+          {isPokemonCaptured() && (
             <div
               className={`absolute top-2 right-8 sm:top-1/2 sm:-translate-y-1/2 sm:right-16 flex items-center gap-2 transition-all ease-out hover:font-bold hover:drop-shadow-xl hover:scale-125 ${
                 isGridView && "top-4 sm:top-8 sm:-translate-y-0 sm:right-8"

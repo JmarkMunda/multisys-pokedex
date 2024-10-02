@@ -3,65 +3,16 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Props } from "./types";
 import { DatePicker } from "@/components/ui/DatePicker";
-import { ChangeEvent, useState } from "react";
-import { toast } from "react-toastify";
-import { getLocalStorage, setLocalStorage } from "@/lib/utils";
-import { CapturedPokemonType } from "@/lib/types";
-import {
-  CAPTURE_ERROR_MESSAGE,
-  CAPTURE_SUCCESS_MESSAGE,
-} from "@/lib/constants";
+import useCapture from "@/hooks/useCapture";
 
 const CaptureModal = ({ id, name, isVisible, onClose }: Props) => {
-  const [nickname, setNickname] = useState("");
-  const [date, setDate] = useState<Date>();
-
-  const handleOnChangeName = (e: ChangeEvent<HTMLInputElement>) =>
-    setNickname(e.target.value);
-
-  const handleDateSelect = (date: Date | undefined) => setDate(date);
+  const { isValid, handleCapture, handleOnChangeName, handleDateSelect } =
+    useCapture(id, name);
 
   const handleSubmit = () => {
-    if (!nickname || !date) {
-      return toast.error(CAPTURE_ERROR_MESSAGE);
-    }
+    if (!isValid()) return;
     handleCapture();
     onClose();
-  };
-
-  const handleCapture = () => {
-    // Check if localstorage for my-pokemons is initialize
-    const pokemons: CapturedPokemonType[] | null =
-      getLocalStorage("my-pokemons"); // returns pokemons or null
-    if (!pokemons) {
-      toast.success(CAPTURE_SUCCESS_MESSAGE);
-      return setLocalStorage("my-pokemons", [
-        {
-          id,
-          name,
-          url: `https://pokeapi.co/api/v2/pokemon/${id}/`,
-          nickname,
-          date: date!.toDateString(),
-        },
-      ]);
-    }
-    // Check if exist
-    const isExist = pokemons.some((pokemon) => pokemon.id === id);
-    if (isExist) return toast.warning("Pokemon already captured");
-    // Store it alongside the current saved pokemon
-    const storeData: CapturedPokemonType[] = [
-      ...pokemons,
-      {
-        id,
-        name,
-        url: `https://pokeapi.co/api/v2/pokemon/${id}/`,
-        nickname,
-        date: date!.toDateString(),
-      },
-    ];
-    // Save it in JSON format
-    setLocalStorage("my-pokemons", storeData);
-    return toast.success(CAPTURE_SUCCESS_MESSAGE);
   };
 
   return (

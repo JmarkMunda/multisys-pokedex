@@ -9,13 +9,15 @@ import Stats from "@/components/pages/PokemonPage/Stats";
 import CaptureReleaseButton from "@/components/pages/PokemonPage/CaptureReleaseButton";
 import CaptureModal from "@/components/pages/PokemonPage/CaptureModal";
 import ReleaseModal from "@/components/pages/PokemonPage/ReleaseModal";
-import useCaptureRelease from "@/hooks/useCaptureRelease";
+import useCapture from "@/hooks/useCapture";
+import useCaptureReleaseModal from "@/hooks/useCaptureReleaseModal";
 
 const PokemonPage = () => {
   const { id } = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
 
+  // Capture Release Modal
   const {
     showCaptureModal,
     showReleaseModal,
@@ -23,11 +25,13 @@ const PokemonPage = () => {
     handleCloseCaptureModal,
     handleOpenReleaseModal,
     handleCloseReleaseModal,
-    checkIfPokemonCaptured,
-  } = useCaptureRelease();
+  } = useCaptureReleaseModal();
 
   // Get Pokemon Details
   const { data } = usePokemon(id!);
+
+  // Capturing Pokemon
+  const { isPokemonCaptured } = useCapture(id!, data!.name);
 
   if (!data) return;
 
@@ -53,13 +57,13 @@ const PokemonPage = () => {
                 baseExp={data?.base_experience}
                 weight={data?.weight}
                 height={data?.height}
-                isCaptured={checkIfPokemonCaptured(id!)}
+                isCaptured={isPokemonCaptured()}
               />
               <Stats stats={data?.stats} />
             </div>
 
             <CaptureReleaseButton
-              isCaptured={checkIfPokemonCaptured(id!)}
+              isCaptured={isPokemonCaptured()}
               handleOpenCaptureModal={handleOpenCaptureModal}
               handleOpenReleaseModal={handleOpenReleaseModal}
             />
